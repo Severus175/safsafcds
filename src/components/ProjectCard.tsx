@@ -1,5 +1,8 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Globe, Github } from "lucide-react";
 import { motion } from "framer-motion";
+import { MagicCard } from "./ui/MagicCard";
+import ShineBorder from "./ui/ShineBorder";
+import { Badge } from "./ui/Badge";
 
 interface ProjectCardProps {
   title: string;
@@ -8,6 +11,7 @@ interface ProjectCardProps {
   tech: string[];
   image: string;
   index: number;
+  source?: string;
 }
 
 export default function ProjectCard({
@@ -17,84 +21,74 @@ export default function ProjectCard({
   tech,
   image,
   index,
+  source,
 }: ProjectCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.035 }} // 🎯 Popout on hover
-      transition={{
-        duration: 0.4,
-        delay: index * 0.08,
-        ease: [0.4, 0, 0.2, 1],
-      }}
-      viewport={{ once: true }}
-      className="group relative w-[290px] h-[310px] rounded-lg bg-transparent cursor-pointer border-none flex overflow-hidden dark:shadow-2xl"
+    <MagicCard 
+      className="cursor-pointer rounded-lg dark:shadow-2xl w-[45%] max-sm:w-full h-[310px] border-none !bg-transparent" 
+      gradientColor="rgba(38, 38, 38, 0.4)"
     >
-      {/* Animated Border */}
-      <div
-        style={{
-          "--border-width": "1px",
-          "--border-radius": "8px",
-          "--duration": "14s",
-          "--mask-linear-gradient":
-            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          "--background-radial-gradient":
-            "radial-gradient(transparent,transparent,#FF9933,#FFFFFF,#138808,transparent,transparent)",
-        } as React.CSSProperties}
-        className="before:absolute before:inset-0 before:aspect-square before:size-full before:rounded-[--border-radius] before:p-[--border-width] before:will-change-[background-position] before:content-[''] before:![-webkit-mask-composite:xor] before:![mask-composite:exclude] before:[background-image:--background-radial-gradient] before:[background-size:300%_300%] before:[mask:--mask-linear-gradient] motion-safe:before:animate-shine relative z-10 w-full h-full"
+      <ShineBorder 
+        className="border h-full w-full relative rounded-lg flex flex-col justify-center items-start md:shadow-xl !bg-transparent !pointer-events-none" 
+        color={["#FF9933", "#FFFFFF", "#138808"]}
       >
         <div className="h-full w-full rounded-lg bg-white dark:bg-black p-3 flex flex-col justify-between text-black dark:text-white">
-          {/* Image */}
-          <div className="h-[90px] overflow-hidden rounded-md relative">
-            <img
-              src={image}
-              alt={title}
-              className="w-full h-full object-cover object-center"
-            />
-            <div className="absolute top-2 right-2 z-10 p-1 rounded bg-gray-900/80 border border-gray-700/50">
-              <ExternalLink className="w-3 h-3 text-white" />
-            </div>
+          {/* Logo */}
+          <div className="px-0">
+            <img src={image} alt="project-logo" width={30} height={30} />
           </div>
-
+          
           {/* Title + Description */}
-          <div className="mt-2">
-            <h3 className="text-sm font-bold line-clamp-1">{title}</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+          <div className="px-0 mt-4 !pointer-events-auto">
+            <a href={href || source} target="_blank" rel="noopener noreferrer" className="no-underline">
+              <h1 className="text-xl text-black dark:text-white font-bold tracking-tight text-start whitespace-nowrap font-space">
+                {title}
+              </h1>
+            </a>
+            <p className="mt-2 text-sm dark:text-[#D1D5DB] text-gray-600 font-space">
               {description}
             </p>
           </div>
-
-          {/* Tech tags */}
-          <div className="flex gap-1 mt-2 flex-wrap">
-            {tech.slice(0, 4).map((item, i) => (
-              <span
-                key={i}
-                className="text-[10px] px-2 py-[2px] rounded border text-gray-800 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+          
+          {/* Tech Stack */}
+          <div className="flex gap-1 px-0 mt-4 flex-wrap !pointer-events-auto">
+            {tech.map((techItem, idx) => (
+              <Badge 
+                key={idx} 
+                variant="outline" 
+                className="text-[10px] dark:hover:!bg-white hover:!bg-black hover:!text-white dark:hover:!text-black !pointer-events-auto font-space"
               >
-                {item}
-              </span>
+                {techItem}
+              </Badge>
             ))}
-            {tech.length > 4 && (
-              <span className="text-[10px] px-2 py-[2px] rounded border text-gray-400 bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600">
-                +{tech.length - 4}
-              </span>
+          </div>
+          
+          {/* Links */}
+          <div className="px-0 mt-3 !pointer-events-auto flex gap-1">
+            {href && (
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                <Badge 
+                  variant="solid" 
+                  className="text-[10px] py-[3px] dark:hover:bg-gray-300 font-space"
+                >
+                  <Globe width={11} height={11} /> Website
+                </Badge>
+              </a>
+            )}
+            
+            {source && (
+              <a href={source} target="_blank" rel="noopener noreferrer">
+                <Badge 
+                  variant="solid" 
+                  className="text-[10px] py-[3px] dark:hover:bg-gray-300 font-space"
+                >
+                  <Github width={11} height={11} /> Source
+                </Badge>
+              </a>
             )}
           </div>
-
-          {/* Full clickable area */}
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Open ${title}`}
-            className="absolute inset-0 z-30"
-          ></a>
         </div>
-      </div>
-
-      {/* Optional Hover Glow */}
-      <div className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-80" style={{ background: "radial-gradient(200px at -200px -200px, rgb(38, 38, 38), transparent 100%)" }} />
-    </motion.div>
+      </ShineBorder>
+    </MagicCard>
   );
 }
