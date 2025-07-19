@@ -1,5 +1,4 @@
 import { Code, ChevronDown } from 'lucide-react';
-import { motion } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 import AnimatedSection from './AnimatedSection';
 import { useState } from 'react';
@@ -136,7 +135,7 @@ export default function Projects({ isDark }: ProjectsProps) {
       <div className="w-full h-fit px-64 max-[1025px]:px-4 max-[1285px]:px-40 max-lg:px-0 max-sm:px-4 flex flex-col items-center mt-4 pb-8 relative z-10">
         {/* 🧠 Header */}
         <AnimatedSection className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-gray-900/60 border border-gray-700/50 text-gray-300 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-gray-900/60 border border-gray-700/50 text-gray-300 backdrop-blur-sm font-space">
             <Code className="w-4 h-4 text-cyan-400" />
             <span className="font-mono">Proof of Work</span>
           </div>
@@ -151,7 +150,7 @@ export default function Projects({ isDark }: ProjectsProps) {
           </p>
         </AnimatedSection>
 
-        {/* 🧩 Projects Grid */}
+        {/* Projects Grid - Exact Layout */}
         <div className="flex w-full flex-col gap-4 lg:flex-row mt-4 px-32 max-lg:px-0 max-sm:px-0 flex-wrap items-center ml-14 max-sm:ml-0 max-lg:ml-0 max-[350px]:mr-5 max-[321px]:mr-10">
           {projects.slice(0, visibleProjects).map((project, index) => (
             <ProjectCard
@@ -181,27 +180,6 @@ export default function Projects({ isDark }: ProjectsProps) {
           </Badge>
         )}
 
-        {/* View All Projects Link */}
-        <AnimatedSection className="text-center mt-8" delay={0.5}>
-          <motion.a
-            href="https://github.com/Scriptzstarling"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-black/80 border border-cyan-400/50 text-cyan-400 font-mono text-sm backdrop-blur-sm transition-all duration-300 hover:border-cyan-500 hover:text-white"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-            <Code className="w-4 h-4" />
-            <span>View All Projects</span>
-            <motion.div
-              animate={{ x: [0, 3, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              →
-            </motion.div>
-          </motion.a>
-        </AnimatedSection>
       </div>
     </section>
   );
